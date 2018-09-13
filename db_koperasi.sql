@@ -41,8 +41,8 @@ CREATE TABLE `company` (
 --
 
 INSERT INTO `company` (`id`, `name`, `address`, `create_on`, `create_by`, `update_on`, `update_by`) VALUES
-(1, 'PT. Duta Alam Semesta', 'Tangerang', NULL, NULL, NULL, NULL),
-(2, 'PT. Arca International', 'Jakarta Barat', 2015, 8, 2015, 8);
+(1, '9G', '', NULL, NULL, NULL, NULL),
+(2, '8A', '', 2015, 8, 2015, 8);
 
 -- --------------------------------------------------------
 
