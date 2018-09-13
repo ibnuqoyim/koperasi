@@ -9,7 +9,7 @@ class Laporan_potongan extends CI_Model
 	}
 
 
-	public function list_data($offset='',$sort_by='', $sort_order='')
+	public function list_data_simpanan($offset='',$sort_by='', $sort_order='')
 	{
 		$sess = $this->session->userdata($this->func);
 		$tgl_dari	= $sess['tgl_dari'] ? format_date_us('01/'.$sess['tgl_dari']) : '';
@@ -44,7 +44,52 @@ class Laporan_potongan extends CI_Model
 		} else {
 			$offset = $offset-$this->config->item('page_num_report');
 			if($offset >= 0){
-				return $this->list_data($offset,$sort_by, $sort_order,$keyword);
+				return $this->list_data_simpanan($offset,$sort_by, $sort_order,$keyword);
+			} else {
+				return array();
+			}
+		}
+
+	}
+
+	public function list_data_pinjaman($offset='',$sort_by='', $sort_order='')
+	{
+		$sess = $this->session->userdata($this->func);
+		$tgl_dari	= $sess['tgl_dari'] ? format_date_us('01/'.$sess['tgl_dari']) : '';
+		$tgl_sampai_arr	= explode('/',$sess['tgl_sampai']);
+		$tgl_sampai = '';
+		if(count($tgl_sampai_arr)>0 && $sess['tgl_sampai']!=''){
+			$tgl_sampai = $tgl_sampai_arr[1].'-'.$tgl_sampai_arr[0].'-'.countDatePerMonth($tgl_sampai_arr[0],$tgl_sampai_arr[1]);
+		}
+		$memberid		= $sess['memberid'] ? $sess['memberid'] : '';
+		$companyid		= $sess['companyid'] ? $sess['companyid'] : '';
+
+		$this->db->select('i.date as tgl_simpan,m.id as  memberid,m.name,m.no_member,i.amount');
+		$this->db->from('installment i');
+		$this->db->join('loan l','i.loanid=l.id');
+		$this->db->join('member m','m.id=l.memberid');
+
+		if($memberid){
+			$this->db->where('l.memberid',$memberid);
+		}
+		if($companyid){
+			$this->db->where('m.companyid',$companyid);
+		}
+		if($tgl_dari){
+			$this->db->where('i.date >=',$tgl_dari);
+		}
+		if($tgl_sampai){
+			$this->db->where('i.date <=',$tgl_sampai);
+		}
+		//$this->db->order_by($sort_by,$sort_order);
+		//$this->db->limit($this->config->item('page_num_report'),$offset);
+		$result = $this->db->get()->result_array();
+		if(count($result)>0){
+			return $result;
+		} else {
+			$offset = $offset-$this->config->item('page_num_report');
+			if($offset >= 0){
+				return $this->list_data_pinjaman($offset,$sort_by, $sort_order,$keyword);
 			} else {
 				return array();
 			}

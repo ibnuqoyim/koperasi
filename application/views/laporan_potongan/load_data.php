@@ -1,90 +1,28 @@
 <?php
-if(count($result)>0){
-?>
-<!-- Table data anggota 
-<table border="0" width="100%" cellpadding="4" cellspacing="0" class="table table-hover fill-head">
-	<tr>
-		<th width="10%" style="text-align:left;">Nama</th>
-		<th width="1%" style="text-align:left;">:</th>
-		<th width="89%" style="text-align:left;">Nama</th>
-	</tr>
-	<tr>
-		<th width="10%" style="text-align:left;">No. Anggota</th>
-		<th width="1%"style="text-align:left;">:</th>
-		<th width="89%" style="text-align:left;">Nama</th>
-	</tr>
-	<tr>
-		<th width="10%" style="text-align:left;">Total Simpanan</th>
-		<th width="1%"style="text-align:left;">:</th>
-		<th width="89%" style="text-align:left;">Nama</th>
-	</tr>
-	<tr>
-		<th width="10%" style="text-align:left;">Total Pinjaman</th>
-		<th width="1%"style="text-align:left;">:</th>
-		<th width="89%" style="text-align:left;">Nama</th>
-	</tr>
-	<tr>
-		<th width="10%" style="text-align:left;">Total Hutang</th>
-		<th width="1%"style="text-align:left;">:</th>
-		<th width="89%" style="text-align:left;">Nama</th>
-	</tr>
-</table>
-<!-- End Table data anggota 
-
-<br>
-<table width="50%" ><tr><th style="text-align:center">RINCIAN SIMPANAN</th></tr></table>
-<!-- Table data Simpanan anggota 
-<table border="1" width="50%" cellpadding="4" cellspacing="0" class="table table-hover fill-head">
-	<tr>
-		<th width="1%" rowspan="2" style="text-align:left;">NO</th>
-		<th width="40%" rowspan="2" style="text-align:left;">TANGGAL</th>
-		<th width="55%" colspan="4" style="text-align:left;">NILAI SIMPANAN</th>
-	</tr>
-	<tr>
-		<th style="text-align:center">POKOK</th>
-        <th style="text-align:center">WAJIB</th>
-        <th style="text-align:center">SUKARELA</th>
-        <th style="text-align:center">TOTAL</th>
-	</tr>
-	<?php 
-	$gt_simpanan_pokok = 0;
-	$gt_simpanan_wajib = 0;
-	$gt_simpanan_sukarela = 0;
-	$gt_simpanan_total = 0;
-	$gt_pinjaman = 0;
-	$gt_sisa = 0;
-	$gt_angsuran = 0;
-	//$gt_potongan_gaji = 0;
-	foreach($result as $result_key => $result_val){
-		$total_simpanan = $result_val['pokok']+$result_val['wajib']+$result_val['sukarela'];
-		$pinjaman = $this->laporan_potongan->get_pinjam_angsuran($result_val['memberid'],$result_val['tgl_simpan']);
-		
-	?>
-	<tr>
-		<td width="1%" style="text-align:left;"><?=($result_key+1)?></td>
-		<td width="40%" style="text-align:left;"><?=format_bulan_tahun($result_val['tgl_simpan'])?></td>
-		<td align="right"><?=format_uang($result_val['pokok'])?></td>
-        <td align="right"><?=format_uang($result_val['wajib'])?></td>
-        <td align="right"><?=format_uang($result_val['sukarela'])?></td>
-        <td align="right"><?=format_uang($total_simpanan)?></td>
+if(count($result_simpanan)>0){
 	
-	</tr>
-	<?php 
-	$gt_simpanan_pokok += $result_val['pokok'];
-	$gt_simpanan_wajib += $result_val['wajib'];
-	$gt_simpanan_sukarela += $result_val['sukarela'];
-	}	?>
-	<tr>
-		<th colspan="2" style="text-align:left;">Total</th>
-		<th style="text-align:center">POKOK</th>
-        <th style="text-align:center">WAJIB</th>
-        <th style="text-align:center">SUKARELA</th>
-        <th style="text-align:center">TOTAL</th>
-	</tr>
-</table>
-<!-- End Table data anggota -->
+?>
 
+<div class="btn-group" style="float:right">
+	<a class="btn btn-primary" title="Print" target="_blank" href="<?=site_url($this->func.'s/print_data')?>"><i class="fa fa-print"></i> Print</a>
+    <!--<ul class="dropdown-menu">
+    	<li>
+            <a href="<?=site_url($this->func.'s/print_data')?>" title="Print" target="_blank" >
+            
+            </a>
+        </li>
+    	<li>
+            <a href="<?=site_url($this->func.'s/export_data')?>" title="Print" target="_blank" >
+            <i class="fa fa-file-o"></i> Export
+            </a>
+        </li> 
+    </ul>-->
 
+</div>
+<br/>
+
+<br/>
+<br/>
 <table border="1" width="100%" cellpadding="4" cellspacing="0" class="table table-hover fill-head">
     
 	<thead>
@@ -107,7 +45,7 @@ if(count($result)>0){
 	$gt_simpanan_wajib = 0;
 	$gt_simpanan_sukarela = 0;
 	$gt_simpanan_total = 0;
-	foreach($result as $result_key => $result_val){
+	foreach($result_simpanan as $result_key => $result_val){
 		$total_simpanan = $result_val['pokok']+$result_val['wajib']+$result_val['sukarela'];
 		$pinjaman = $this->laporan_potongan->get_pinjam_angsuran($result_val['memberid'],$result_val['tgl_simpan']);
 
@@ -146,9 +84,9 @@ if(count($result)>0){
 		$gt_simpanan_wajib += $result_val['wajib'];
 		$gt_simpanan_sukarela += $result_val['sukarela'];
 		$gt_simpanan_total += $total_simpanan;
-		$gt_pinjaman += $total_pinjaman;
-		$gt_sisa += $sisa_lalu;
-		$gt_angsuran += $angsuran;
+		//$gt_pinjaman += $total_pinjaman;
+		//$gt_sisa += $sisa_lalu;
+		//$gt_angsuran += $angsuran;
 		//$gt_potongan_gaji += $total_potong_gaji;
 	}
 	?>
@@ -166,22 +104,7 @@ if(count($result)>0){
 <br/>
 <?php //echo $pagination?>
 <br/>
-<div class="btn-group" style="float:right">
-	<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">Print & Export</a>
-    <ul class="dropdown-menu">
-    	<li>
-            <a href="<?=site_url($this->func.'s/print_data')?>" title="Print" target="_blank" >
-            <i class="fa fa-print"></i> Print
-            </a>
-        </li>
-    	<li>
-            <a href="<?=site_url($this->func.'s/export_data')?>" title="Print" target="_blank" >
-            <i class="fa fa-file-o"></i> Export
-            </a>
-        </li>
-    </ul>
 
-</div>
 <br/>
 <br/>
 <br/>
@@ -214,8 +137,9 @@ if(count($result)>0){
 	$gt_pinjaman = 0;
 	$gt_sisa = 0;
 	$gt_angsuran = 0;
+	$a = 0;
 	//$gt_potongan_gaji = 0;
-	foreach($result as $result_key => $result_val){
+	foreach($result_pinjaman as $result_key => $result_val){
 		
 		$pinjaman = $this->laporan_potongan->get_pinjam_angsuran($result_val['memberid'],$result_val['tgl_simpan']);
 
@@ -253,7 +177,7 @@ if(count($result)>0){
             <td align="center"><?=$lama_pinjaman ? $lama_pinjaman.' Bulan' : 0?></td>
         </tr>
     <?php
-    	$a = 1;
+    	
 		if($total_pinjaman > 0){
 			 $gt_pinjaman += $total_pinjaman;
 			 $a++;
@@ -266,7 +190,7 @@ if(count($result)>0){
 	?>
     <tfoot>
     <tr bgcolor="#efefef">
-        <td colspan="4" align="center"><strong>TOTAL</strong><?php echo $total_pinjaman; ?></td>
+        <td colspan="4" align="center"><strong>TOTAL</strong></td>
         
         <td align="right"><strong><?=format_uang($totpij)?></strong></td>
         <td align="right"><strong><?=format_uang($totpij - $gt_angsuran)?></strong></td>
@@ -281,22 +205,7 @@ if(count($result)>0){
 <br/>
 <?php //echo $pagination?>
 <br/>
-<div class="btn-group" style="float:right">
-	<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">Print & Export</a>
-    <ul class="dropdown-menu">
-    	<li>
-            <a href="<?=site_url($this->func.'s/print_data')?>" title="Print" target="_blank" >
-            <i class="fa fa-print"></i> Print
-            </a>
-        </li>
-    	<li>
-            <a href="<?=site_url($this->func.'s/export_data')?>" title="Print" target="_blank" >
-            <i class="fa fa-file-o"></i> Export
-            </a>
-        </li>
-    </ul>
 
-</div>
 <br/>
 <br/>
 <br/>

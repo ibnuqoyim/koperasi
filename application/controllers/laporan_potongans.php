@@ -82,7 +82,8 @@ class Laporan_potongans extends CI_Controller
 		);
 		$this->session->set_userdata($arr_sess);
 
-		$data['result'] 	= $this->laporan_potongan->list_data($data['page'],$data['sort_by'],$data['sort_order']);
+		$data['result_simpanan'] 	= $this->laporan_potongan->list_data_simpanan($data['page'],$data['sort_by'],$data['sort_order']);
+		$data['result_pinjaman'] 	= $this->laporan_potongan->list_data_pinjaman($data['page'],$data['sort_by'],$data['sort_order']);
 		/*$jumlah 		 	= $this->laporan_potongan->jumlah_data();
 
 		$config['base_url']			= base_url() . 'index.php/'.$this->func.'s/load_data/';
@@ -123,14 +124,15 @@ class Laporan_potongans extends CI_Controller
 		}
 		$data['period'] = format_period_month($tgl_dari,$tgl_sampai);
 
-		$data['result'] 	= $this->laporan_potongan->list_data();
+		$data['result_pinjaman'] 	= $this->laporan_potongan->list_data_pinjaman();
+		$data['result_simpanan'] 	= $this->laporan_potongan->list_data_simpanan();
 		$company 	= $this->laporan_potongan->get_company($companyid);
 		$data['perusahaan'] 	= '';
 		if(count($company)>0){
 			$data['perusahaan'] 	= $company['name'];
 		}
 
-		if(count($data['result']>0)){
+		if(count($data>0)){
 
 			$this->load->helper( 'tcpdf' );
 				
@@ -190,9 +192,10 @@ class Laporan_potongans extends CI_Controller
 		
 		$data['period'] = format_period_month($tgl_dari,$tgl_sampai);
 
-		$data['result'] 	= $this->laporan_potongan->list_data();
+		$data['result_pinjaman'] 	= $this->laporan_potongan->list_data_pinjaman();
+		$data['result_simpanan'] 	= $this->laporan_potongan->list_data_simpanan();
 
-		if(count($data['result']>0)){
+		if(count($data>0)){
 
 	
 			$html =	$this->load->view($this->func.'/print',$data);
